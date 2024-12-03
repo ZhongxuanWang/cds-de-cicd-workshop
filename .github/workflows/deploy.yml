@@ -40,3 +40,5 @@ jobs:
         task-definition: task-def.json  # located in this repo's root
         wait-for-service-stability: true
         region: ${{ secrets.AWS_REGION }}
+      env:
+        AWS_REGION: ${{ secrets.AWS_REGION }}
