@@ -23,9 +23,9 @@ jobs:
 
     - name: Build and push Docker image to ECR
       run: |
-        docker build -t zxdanielwang/cicdworkshop .
-        docker tag zxdanielwang/cicdworkshop:latest ${{ steps.ecr-login.outputs.registry }}/cicdworkshop:latest
-        docker push ${{ steps.ecr-login.outputs.registry }}/cicdworkshop:latest
+        docker build -t zxdanielwang/cicdworkshop . --platform linux/amd64
+        docker tag zxdanielwang/cicdworkshop:latest public.ecr.aws/g0i8g9c7/cicdworkshop:latest
+        docker push public.ecr.aws/g0i8g9c7/cicdworkshop:latest
 
     - name: Deploy to ECS
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
