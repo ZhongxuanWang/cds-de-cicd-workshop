@@ -26,7 +26,7 @@ jobs:
     - name: Deploy to ECS
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        cluster: your-cluster-name
-        service: your-service-name
-        task-definition: task-def.json
+        cluster: cds
+        service: cds-service
+        task-definition: task-def.json  # located in this repo's root
         wait-for-service-stability: true
