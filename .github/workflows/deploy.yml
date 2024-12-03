@@ -23,6 +23,7 @@ jobs:
 
     - name: Build and push Docker image to ECR
       run: |
+        aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
         docker build -t zxdanielwang/cicdworkshop . --platform linux/amd64
         docker tag zxdanielwang/cicdworkshop:latest public.ecr.aws/g0i8g9c7/cicdworkshop:latest
         docker push public.ecr.aws/g0i8g9c7/cicdworkshop:latest
