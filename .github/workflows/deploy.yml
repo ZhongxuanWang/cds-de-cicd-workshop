@@ -1,0 +1,32 @@
+name: Deploy to ECS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # python:3.10-slim
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Log in to Amazon ECR
+      id: ecr-login
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build and push Docker image to ECR
+      run: |
+        docker build -t zxdanielwang/cicdworkshop .
+        docker tag zxdanielwang/cicdworkshop:latest ${{ steps.ecr-login.outputs.registry }}/cicdworkshop:latest
+        docker push ${{ steps.ecr-login.outputs.registry }}/cicdworkshop:latest
+
+    - name: Deploy to ECS
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        cluster: your-cluster-name
+        service: your-service-name
+        task-definition: task-def.json
+        wait-for-service-stability: true
