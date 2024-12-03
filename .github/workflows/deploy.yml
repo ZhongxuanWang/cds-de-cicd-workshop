@@ -22,8 +22,12 @@ jobs:
         AWS_REGION: ${{ secrets.AWS_REGION }}
 
     - name: Build and push Docker image to ECR
+      env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
       run: |
-        aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+        aws ecr-public get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin public.ecr.aws
         docker build -t zxdanielwang/cicdworkshop . --platform linux/amd64
         docker tag zxdanielwang/cicdworkshop:latest public.ecr.aws/g0i8g9c7/cicdworkshop:latest
         docker push public.ecr.aws/g0i8g9c7/cicdworkshop:latest
